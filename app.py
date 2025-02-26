@@ -1,5 +1,7 @@
 import streamlit as st
 import sympy as sp
+import numpy as np
+import matplotlib.pyplot as plt
 
 def solve_quadratic(a, b, c):
     discriminant = b**2 - 4*a*c
@@ -28,3 +30,18 @@ if st.button("Solve"):
         else:
             st.latex(fr"x = \frac{{-{b} \pm \sqrt{{{b**2 - 4*a*c}}}}}{{2*a}}")
             st.write(f"Roots: {solution[0]}, {solution[1]}")
+            
+            # Plot the quadratic function
+            x = np.linspace(-10, 10, 400)
+            y = a*x**2 + b*x + c
+            
+            fig, ax = plt.subplots()
+            ax.plot(x, y, label=f"{a}x² + {b}x + {c}")
+            ax.axhline(0, color='black', linewidth=1)
+            ax.axvline(0, color='black', linewidth=1)
+            
+            if isinstance(solution, tuple):
+                ax.scatter([float(solution[0]), float(solution[1])], [0, 0], color='red', zorder=3, label='Roots')
+            
+            ax.legend()
+            st.pyplot(fig)
